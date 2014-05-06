@@ -1,14 +1,15 @@
 var connect = require('connect')
-
-module.exports = function(){
+var serveStatic = require('serve-static')
+module.exports = function(dir){
   var app = connect();
-  app.use(function(req, res, next){
-    var url = req.url;
+  app.use(function(request,response,next){
+    var url = request.url;
     if(url=="/current-time"){
-      res.end(new Date().toISOString());
+      response.end(new Date().toISOString());
     }else{
       next();
     }
   })
+  app.use(serveStatic(dir));
   return app;
 }
